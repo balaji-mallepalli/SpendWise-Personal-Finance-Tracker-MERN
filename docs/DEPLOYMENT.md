@@ -49,4 +49,13 @@ Once the Vercel deployment finishes and you have your live frontend URL:
 2.  Update the `ALLOWED_ORIGINS` environment variable by replacing `*` with your actual Vercel URL (e.g., `https://your-app-name.vercel.app`).
 3.  Wait for Render to redeploy the backend.
 
+---
+
+## 🆘 Troubleshooting: "Failed to Login" (CORS Errors)
+
+If you see a "Failed to Login" error on your live Vercel site:
+1.  **Check the Vercel URL**: Ensure your URL in Render's `ALLOWED_ORIGINS` **exactly** matches your Vercel URL (e.g., `https://your-app-name.vercel.app`) with **no trailing slash**.
+2.  **Wildcard Conflict**: Avoid using `*` for `ALLOWED_ORIGINS` in production. FastAPI does not allow credentialed requests (logins) when the origin is a wildcard.
+3.  **Variable Names**: Verify the key is `ALLOWED_ORIGINS` (plural) and matches the code.
+
 **Congratulations! Your SpendWise app is now globally accessible!**
