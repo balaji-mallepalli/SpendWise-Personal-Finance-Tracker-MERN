@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import TransactionForm from '../components/TransactionForm';
 import { getTransactions, createTransaction, updateTransaction, deleteTransaction, exportTransactions } from '../services/transactionService';
+import { getCategories } from '../services/categoryService';
 import { Plus } from 'lucide-react';
 
 export default function Transactions() {
@@ -9,6 +10,7 @@ export default function Transactions() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTxn, setEditingTxn] = useState(null);
+  const [categoryMap, setCategoryMap] = useState({});
 
   const fetchTransactions = async () => {
     setLoading(true);
@@ -24,7 +26,19 @@ export default function Transactions() {
 
   useEffect(() => {
     fetchTransactions();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await getCategories();
+      const map = {};
+      res.data.forEach(cat => { map[cat.id] = cat.name; });
+      setCategoryMap(map);
+    } catch (error) {
+      console.error("Failed to load categories", error);
+    }
+  };
 
   const handleExport = async () => {
     try {
@@ -86,6 +100,7 @@ export default function Transactions() {
               <tr>
                 <th>Date</th>
                 <th>Type</th>
+                <th>Category</th>
                 <th>Amount</th>
                 <th>Description</th>
                 <th style={{ textAlign: 'right' }}>Actions</th>
@@ -93,9 +108,9 @@ export default function Transactions() {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} style={{ textAlign: 'center' }}>Loading...</td></tr>
+                <tr><td colSpan={6} style={{ textAlign: 'center' }}>Loading...</td></tr>
               ) : transactions.length === 0 ? (
-                <tr><td colSpan={5} style={{ textAlign: 'center' }}>No transactions found</td></tr>
+                <tr><td colSpan={6} style={{ textAlign: 'center' }}>No transactions found</td></tr>
               ) : (
                 transactions.map(txn => (
                   <tr key={txn.id}>
@@ -105,6 +120,7 @@ export default function Transactions() {
                           {txn.type}
                         </span>
                     </td>
+                    <td style={{ textTransform: 'capitalize' }}>{categoryMap[txn.category_id] || '-'}</td>
                     <td style={{ fontWeight: 600, color: txn.type === 'income' ? 'var(--color-income)' : 'var(--text-primary)' }}>
                       ₹{txn.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </td>
