@@ -12,7 +12,7 @@
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://spend-wise-personal-finance-tracker.vercel.app/)
 [![API Status](https://img.shields.io/badge/⚡_API-Render-46E3B7?style=for-the-badge&logo=render)](https://spendwise-personal-finance-tracker.onrender.com)
-[![GitHub](https://img.shields.io/badge/📦_Source-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/balaji-mallepalli/SpendWise-Personal-Finance-Tracker)
+[![GitHub](https://img.shields.io/badge/📦_Source-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/balaji-mallepalli/SpendWise-Personal-Finance-Tracker-MERN)
 
 *A modern full-stack MERN web application for tracking expenses, managing budgets, and visualizing spending patterns — built with MongoDB, Express.js, React & Node.js.*
 
