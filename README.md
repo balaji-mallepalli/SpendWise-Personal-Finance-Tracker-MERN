@@ -14,7 +14,7 @@
 [![API Status](https://img.shields.io/badge/⚡_API-Render-46E3B7?style=for-the-badge&logo=render)](https://spendwise-personal-finance-tracker.onrender.com)
 [![GitHub](https://img.shields.io/badge/📦_Source-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/balaji-mallepalli/SpendWise-Personal-Finance-Tracker)
 
-*A modern full-stack web application for tracking expenses, managing budgets, and visualizing spending patterns — built with React, FastAPI & MongoDB.*
+*A modern full-stack MERN web application for tracking expenses, managing budgets, and visualizing spending patterns — built with MongoDB, Express.js, React & Node.js.*
 
 ---
 
@@ -112,10 +112,10 @@ SpendWise is a **production-grade personal finance tracker** built as a Full Sta
                            │  Authorization: Bearer <JWT>
 ┌──────────────────────────┴──────────────────────────────────┐
 │                    ⚙️  APPLICATION TIER                      │
-│             FastAPI • Python 3.11 • Pydantic v2             │
-│         Motor (Async) • Passlib (Bcrypt) • PyJWT            │
+│            Express.js • Node.js • Mongoose ODM              │
+│            bcryptjs • jsonwebtoken • cors • dotenv           │
 └──────────────────────────┬──────────────────────────────────┘
-                           │  Motor Async Driver (TCP 27017)
+                           │  Mongoose Driver (TCP 27017)
 ┌──────────────────────────┴──────────────────────────────────┐
 │                     🗄️  DATA TIER                            │
 │                    MongoDB Atlas (Cloud)                     │
@@ -132,10 +132,10 @@ SpendWise is a **production-grade personal finance tracker** built as a Full Sta
 | Layer | Technologies |
 |:---:|:---|
 | **Frontend** | ![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/Tailwind_v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) ![Recharts](https://img.shields.io/badge/Recharts-FF6384?style=flat-square) |
-| **Backend** | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) ![Python](https://img.shields.io/badge/Python_3.11-3776AB?style=flat-square&logo=python&logoColor=white) ![Pydantic](https://img.shields.io/badge/Pydantic_v2-E92063?style=flat-square) |
-| **Database** | ![MongoDB](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white) ![Motor](https://img.shields.io/badge/Motor_(Async)-47A248?style=flat-square) |
-| **Auth** | ![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white) ![Bcrypt](https://img.shields.io/badge/Bcrypt-003A70?style=flat-square) |
-| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white) ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white) |
+| **Backend** | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat-square&logo=mongoose&logoColor=white) |
+| **Database** | ![MongoDB](https://img.shields.io/badge/MongoDB_Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white) ![Mongoose](https://img.shields.io/badge/Mongoose_ODM-880000?style=flat-square) |
+| **Auth** | ![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white) ![Bcrypt](https://img.shields.io/badge/bcryptjs-003A70?style=flat-square) |
+| **Testing** | ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white) |
 | **DevOps** | ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white) ![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white) |
 
 </div>
@@ -147,16 +147,15 @@ SpendWise is a **production-grade personal finance tracker** built as a Full Sta
 ```
 SpendWise/
 ├── 📁 backend/
-│   ├── app/
-│   │   ├── auth/            # JWT token creation & validation
-│   │   ├── models/          # Pydantic schemas (User, Transaction, Budget...)
-│   │   ├── routers/         # API endpoints (auth, transactions, budgets...)
-│   │   ├── services/        # Business logic layer
-│   │   ├── database.py      # MongoDB async connection (Motor)
-│   │   └── main.py          # FastAPI app entry point & CORS config
-│   ├── tests/               # Pytest test suite
-│   ├── requirements.txt
-│   ├── Procfile             # Gunicorn config for Render
+│   ├── config/
+│   │   └── db.js            # Mongoose connection config
+│   ├── middleware/
+│   │   └── authMiddleware.js # JWT verification middleware
+│   ├── models/              # Mongoose schemas (User, Transaction, Budget...)
+│   ├── routes/              # Express route handlers (auth, transactions...)
+│   ├── server.js            # Express app entry point & CORS config
+│   ├── package.json
+│   ├── Procfile             # Node.js config for Render
 │   └── .env.example
 │
 ├── 📁 frontend/
@@ -187,7 +186,7 @@ SpendWise/
 ### Prerequisites
 
 ```
-Node.js  ≥ v18    •    Python  ≥ 3.11    •    MongoDB Atlas account
+Node.js  ≥ v18    •    npm  ≥ 9    •    MongoDB Atlas account
 ```
 
 ### 1️⃣ Clone the repository
@@ -201,18 +200,12 @@ cd SpendWise-Personal-Finance-Tracker
 
 ```bash
 cd backend
-python -m venv venv
-
-# Activate virtual environment
-.\venv\Scripts\activate        # Windows
-source venv/bin/activate       # macOS / Linux
-
-pip install -r requirements.txt
+npm install
 cp .env.example .env           # Add your MONGODB_URL & SECRET_KEY
-uvicorn app.main:app --reload
+npm run dev
 ```
 
-> API docs available at `http://localhost:8000/docs` (Swagger UI)
+> API running at `http://localhost:5000`
 
 ### 3️⃣ Frontend Setup
 
@@ -229,9 +222,6 @@ npm run dev
 ## 🧪 Testing
 
 ```bash
-# Backend tests (API logic & database operations)
-cd backend && pytest tests/ -v
-
 # Frontend tests (UI components & routing)
 cd frontend && npm run test
 ```
